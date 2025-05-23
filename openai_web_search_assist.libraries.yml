@@ -1,0 +1,21 @@
+modal_sweetalert:
+  version: 1.x
+  js:
+    js/search_sweetalert.js: {}
+    https://cdn.jsdelivr.net/npm/sweetalert2@11: { type: external, minified: true }
+  css:
+    theme:
+      https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css: { type: external }
+  dependencies:
+    - core/jquery
+    - core/once
+
+swal_search:
+  version: 1.x
+  js:
+    js/swal_search.js: {}
+    https://cdn.jsdelivr.net/npm/sweetalert2@11: { type: external, minified: true }
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once

@@ -1,0 +1,25 @@
+<?php
+
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+
+/**
+ * Alter article node form to add modal link.
+ */
+function openai_web_search_assist_form_node_article_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $form['title']['search_related_news'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'button',
+    '#value' => t('Search Related News'),
+    '#attributes' => [
+      'type' => 'button',
+      'id' => 'search-related-news-btn',
+      'class' => ['button'],
+    ],
+    '#attached' => [
+      'library' => ['openai_web_search_assist/swal_search'],
+    ],
+  ];
+}

@@ -1,0 +1,4 @@
+services:
+  openai_web_search_assist.openai_service:
+    class: Drupal\openai_web_search_assist\Service\OpenAISearchService
+    arguments: ['@key.repository']

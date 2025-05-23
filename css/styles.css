@@ -1,0 +1,6 @@
+#drupal-modal {
+  top: 5% !important;
+  transform: none !important;
+  max-height: 90vh;
+  overflow-y: auto;
+}

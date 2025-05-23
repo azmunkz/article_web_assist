@@ -1,0 +1,14 @@
+openai_web_search_assist.search_modal:
+  path: '/openai-web-search/modal'
+  defaults:
+    _controller: '\Drupal\openai_web_search_assist\Controller\SearchModalController::modal'
+    _title: 'Search Related Articles'
+  requirements:
+    _permission: 'access content'
+
+openai_web_search_assist.search_run:
+  path: '/openai-web-search/run'
+  defaults:
+    _controller: '\Drupal\openai_web_search_assist\Controller\SearchModalController::runSearch'
+  requirements:
+    _permission: 'access content'
