@@ -43,23 +43,30 @@ class SearchModalController extends ControllerBase {
           'messages' => [
             [
               'role' => 'user',
-              'content' => "Search the web for the top $limit most relevant articles about: \"$query\". Return ONLY a valid JSON array. Each item must include:
-                  - title (string)
-                  - url (string)
-                  - description (string, short paragraph)
-                  - published_date (string, e.g. 'May 22, 2025')
-                  - relevance (number from 1 to 10)
+              'content' => "You are a search assistant. Search the web for the top $limit most relevant news articles about: \"$query\".
+                Return ONLY a JSON array. Each item MUST include the following keys:
+                - title (string)
+                - url (string)
+                - description (string, short paragraph)
+                - published_date (string, e.g. 'May 22, 2025')
+                - relevance (number from 1 to 10)
+                - source (string, e.g. 'BBC', 'Reuters')
 
-                  Format exactly like this (no explanation or markdown):
-                  [
-                    {
-                      \"title\": \"...\",
-                      \"url\": \"https://...\",
-                      \"description\": \"...\",
-                      \"published_date\": \"May 22, 2025\",
-                      \"relevance\": 9
-                    }
-                  ]",
+                IMPORTANT:
+                - Do not include markdown, explanation or extra text.
+                - Response must be raw JSON array ONLY, no key wrapping.
+
+                Example format:
+                [
+                  {
+                    \"title\": \"...\",
+                    \"url\": \"https://...\",
+                    \"description\": \"...\",
+                    \"published_date\": \"May 22, 2025\",
+                    \"relevance\": 8,
+                    \"source\": \"BBC\"
+                  }
+                ]"
             ],
           ],
           'web_search_options' => new \stdClass(),
@@ -71,6 +78,9 @@ class SearchModalController extends ControllerBase {
 
       try {
         $json = json_decode($content, true);
+
+        \Drupal::logger('openai_web_search_assist')->notice('<pre>' . print_r($json, TRUE) . '</pre>');
+
         $results = [];
 
         if (is_array($json)) {
@@ -81,6 +91,7 @@ class SearchModalController extends ControllerBase {
               'description' => $item['description'] ?? '',
               'published_date' => $item['published_date'] ?? '',
               'relevance' => $item['relevance'] ?? 0,
+              'source' => $item['source'] ?? 'Unknown',
             ];
           }
         }

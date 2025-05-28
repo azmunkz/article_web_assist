@@ -44,14 +44,31 @@
                   .then(data => {
                     let html = '<div style="text-align:left; max-height:60vh; overflow-y:auto;"><ol>';
                     data.results.forEach(item => {
-                      const stars = '⭐'.repeat(Math.min(item.relevance || 0, 10));
+                      html += `<li style="margin-bottom: 1rem; color: #e6017d;">`;
 
-                      html += `<li style="margin-bottom:15px;">
-                          <a href="${item.url}" target="_blank" style="font-weight:bold;">${item.title}</a><br/>
-                          <small><strong>Published:</strong> ${item.published_date || 'Unknown'}<br/>
-                          <strong>Relevance:</strong> ${stars} (${item.relevance || 0}/10)<br/>
-                          ${item.description || ''}</small>
-                        </li>`;
+                      // Title
+                      if (item.url && item.url !== '#') {
+                        html += `<a style="color: #e6017d; display: inline-block; margin-bottom: 0.75rem; text-decoration: none;" href="${item.url}" target="_blank" rel="noopener">${item.title}</a>`;
+                      } else {
+                        html += `<span class="display: block; margin-bottom: .75rem;">${item.title}</span>`;
+                      }
+
+                      // Meta info
+                      const source = item.source ?? 'Unknown source';
+                      const date = item.published_date ?? '';
+                      const relevance = item.relevance ? `${item.relevance * 10}%` : '';
+
+                      html += `<small style="display: flex; margin-bottom: .5rem; font-size: .75rem; color: #101010;"><strong style="display: inline-block; margin-right: .35rem;">Source:</strong> ${source}`;
+                      if (date) html += ` &nbsp;|&nbsp; <strong style="display: inline-block; margin-right: .35rem;">Date:</strong> ${date}`;
+                      if (relevance) html += ` &nbsp;|&nbsp; <strong style="display: inline-block; margin-right: .35rem;">Relevance:</strong> ${relevance}`;
+                      html += `</small>`;
+
+                      // Description
+                      if (item.description) {
+                        html += `<small style="font-size: 1rem; color: #101010;">${item.description}</small>`;
+                      }
+
+                      html += `</li>`;
                     });
                     html += '</ol></div>';
 
